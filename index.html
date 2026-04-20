@@ -3,376 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Tryout US 4 Informatika - 50 Soal Analisis</title>
+    <title>Tryout Informatika HOTS Kelas 9</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .option-label { transition: all 0.2s; }
-        .selected-option {
-            border-color: #3b82f6 !important;
-            background-color: #eff6ff !important;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-        }
-        .correct-answer { border-color: #10b981 !important; background-color: #ecfdf5 !important; }
-        .wrong-answer { border-color: #ef4444 !important; background-color: #fef2f2 !important; }
-        .excel-table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 15px 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 0.85rem;
-            background: white;
-        }
-        .excel-table th, .excel-table td {
-            border: 1px solid #d1d5db;
-            padding: 6px 10px;
-            text-align: left;
-        }
-        .excel-table th { background-color: #f9fafb; color: #4b5563; font-weight: 600; text-align: center; }
-        .excel-row-header { background-color: #f3f4f6; font-weight: bold; width: 40px; text-align: center !important; color: #6b7280; }
-        .illustration-box {
-            background: #f8fafc;
-            border: 2px dashed #cbd5e1;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 10px 0;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .correct { background-color: #d1fae5; border-color: #10b981; }
+        .incorrect { background-color: #fee2e2; border-color: #ef4444; }
+        .table-data td, .table-data th { border: 1px solid #e2e8f0; padding: 4px 8px; text-align: center; }
+        .sticky-header { position: sticky; top: 1rem; z-index: 40; }
     </style>
 </head>
-<body class="bg-slate-50 font-sans min-h-screen">
+<body class="bg-gray-50 min-h-screen">
 
-    <header class="bg-indigo-950 text-white py-8 shadow-2xl border-b-4 border-amber-500">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-3xl md:text-4xl font-black uppercase tracking-tighter">Mastery Test: Informatika 50</h1>
-            <p class="mt-2 text-indigo-200 font-medium">45 Pilihan Ganda Analisis & 5 Essay Kritis</p>
-        </div>
-    </header>
-
-    <main class="container mx-auto px-4 py-8 max-w-4xl">
-        <!-- Start Screen -->
-        <div id="start-screen" class="bg-white rounded-3xl shadow-2xl p-10 border border-slate-200">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <div class="space-y-4">
-                    <h3 class="text-xl font-bold text-slate-800">Data Peserta</h3>
-                    <input type="text" id="user-name" placeholder="Nama Lengkap" class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:border-indigo-500 outline-none transition-all">
-                    <select id="user-class" class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:border-indigo-500 outline-none transition-all">
+    <div id="app" class="max-w-4xl mx-auto p-4 md:p-8">
+        <!-- Login Section -->
+        <div id="login-section" class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+            <h1 class="text-3xl font-bold text-indigo-600 mb-2">Ujian Analisis Informatika</h1>
+            <p class="text-gray-500 mb-6">Tingkat Menengah - Berpikir Kritis & HOTS</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                    <input type="text" id="student-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Masukkan nama Anda">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                    <select id="student-class" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
                         <option value="">Pilih Kelas</option>
-                        <option value="9A1">Kelas 9A1</option>
-                        <option value="9A2">Kelas 9A2</option>
-                        <option value="9B1">Kelas 9B1</option>
-                        <option value="9B2">Kelas 9B1</option>
+                        <option value="9A1">9A1</option>
+                        <option value="9A2">9A2</option>
+                        <option value="9B1">9B1</option>
+                        <option value="9B2">9B2</option>
                     </select>
                 </div>
-                <div class="bg-amber-50 p-6 rounded-2xl border-l-4 border-amber-500">
-                    <h4 class="font-bold text-amber-900 mb-2">Informasi Ujian:</h4>
-                    <ul class="text-sm text-amber-800 space-y-2">
-                        <li>• 45 Soal PG (Otomatis Dinilai)</li>
-                        <li>• 5 Soal Essay (Analisis Mandiri)</li>
-                        <li>• Gunakan "Cek Jawaban" untuk pembahasan</li>
-                    </ul>
-                </div>
-            </div>
-            <button onclick="startQuiz()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl text-lg uppercase tracking-widest">
-                Mulai Simulasi Sekarang
-            </button>
-        </div>
-
-        <!-- Quiz Screen -->
-        <div id="quiz-screen" class="hidden">
-            <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
-                <div id="question-info" class="bg-white px-5 py-2 rounded-full shadow-sm border font-bold text-slate-500"></div>
-                <div id="score-counter" class="bg-emerald-500 text-white px-6 py-2 rounded-full shadow-md font-black">Skor: 0</div>
-            </div>
-            
-            <div class="mb-8 bg-slate-200 rounded-full h-4 overflow-hidden shadow-inner">
-                <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-purple-600 h-full transition-all duration-500" style="width: 0%"></div>
-            </div>
-
-            <div id="question-container" class="bg-white rounded-3xl shadow-xl p-8 md:p-12 min-h-[500px] border border-slate-100 relative overflow-hidden">
-                <!-- Question content injected here -->
-            </div>
-
-            <div class="mt-8 space-y-4">
-                <button id="check-btn" onclick="checkCurrentAnswer()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-black py-5 rounded-2xl hidden shadow-lg transition-all transform hover:scale-[1.01] active:scale-95">
-                    KONFIRMASI JAWABAN & ANALISIS
+                <button onclick="startExam()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition duration-200">
+                    Mulai Ujian Analisis
                 </button>
-                <div class="grid grid-cols-2 gap-4">
-                    <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-4 rounded-2xl disabled:opacity-30 transition-all">
-                        SEBELUMNYA
-                    </button>
-                    <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl opacity-50 cursor-not-allowed transition-all" disabled>
-                        BERIKUTNYA
-                    </button>
-                </div>
             </div>
         </div>
 
-        <!-- Result Screen -->
-        <div id="result-screen" class="hidden text-center bg-white rounded-3xl shadow-2xl p-12">
-            <div class="mb-6">
-                <span class="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full text-sm font-black uppercase">Hasil Akhir</span>
-            </div>
-            <h2 class="text-4xl font-black text-slate-800 mb-8">Ujian Selesai!</h2>
-            <div class="flex justify-center mb-10">
-                <div class="relative w-48 h-48 flex items-center justify-center rounded-full border-[12px] border-indigo-50">
-                    <div class="text-center">
-                        <span id="final-score" class="text-6xl font-black text-indigo-600">0</span>
-                        <p class="text-slate-400 font-bold text-sm uppercase tracking-tighter">Point PG</p>
-                    </div>
+        <!-- Exam Section -->
+        <div id="exam-section" class="hidden space-y-6">
+            <div class="bg-indigo-600 text-white p-4 rounded-xl flex justify-between items-center sticky-header shadow-lg">
+                <div>
+                    <p id="display-name" class="font-semibold text-lg"></p>
+                    <p id="display-class" class="text-sm opacity-80"></p>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs uppercase tracking-wider">Progress</p>
+                    <p id="progress-text" class="font-bold">0 / 50</p>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-4 mb-10 max-w-sm mx-auto">
-                <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
-                    <div id="correct-count" class="text-2xl font-black text-emerald-600">0</div>
-                    <div class="text-xs font-bold text-emerald-400 uppercase">Benar</div>
-                </div>
-                <div class="p-4 bg-rose-50 rounded-2xl border border-rose-100">
-                    <div id="wrong-count" class="text-2xl font-black text-rose-600">0</div>
-                    <div class="text-xs font-bold text-rose-400 uppercase">Salah</div>
-                </div>
-            </div>
-            <button onclick="location.reload()" class="bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold hover:bg-black transition-all shadow-lg">
-                ULANGI SIMULASI
+
+            <div id="questions-container" class="space-y-8"></div>
+
+            <button id="btn-finish" onclick="finishExam()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg transition">
+                Selesaikan & Lihat Pembahasan
             </button>
         </div>
-    </main>
+
+        <!-- Result Section -->
+        <div id="result-section" class="hidden space-y-6">
+            <div class="bg-white p-8 rounded-2xl shadow-xl text-center">
+                <h2 class="text-3xl font-bold mb-4">Hasil Evaluasi</h2>
+                <div class="text-6xl font-black text-indigo-600 mb-4" id="final-score">0</div>
+                <p class="text-gray-600 mb-8" id="result-summary"></p>
+                <div class="flex gap-4 justify-center">
+                    <button onclick="location.reload()" class="bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded-lg font-medium">Ulangi Ujian</button>
+                    <button onclick="viewReview()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium">Lihat Review Jawaban</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Membangun 45 Soal PG + 5 Soal Essay
-        const pgQuestions = [
-            // --- BAGIAN 1: SISTEM KOMPUTER & PERANGKAT (1-10) ---
+        const questions = [
+            // HARDWARE & SOFTWARE
+            { id: 1, type: 'pg', category: 'Hardware', q: "Seorang desainer grafis mengeluh komputer sering 'lag' saat membuka banyak aplikasi berat secara bersamaan, meskipun prosesornya sudah sangat cepat. Komponen apa yang paling mungkin perlu ditingkatkan kapasitasnya?", a: ["Power Supply", "Monitor 4K", "Kapasitas RAM", "Kapasitas Harddisk"], c: 2, p: "RAM berfungsi menyimpan data aplikasi yang sedang berjalan secara temporer. Jika RAM penuh, sistem akan melakukan 'swapping' ke disk yang jauh lebih lambat, menyebabkan lag saat multitasking." },
+            { id: 2, type: 'pg', category: 'Hardware', q: "Budi ingin memindahkan data sebesar 50GB dari laptop ke komputer lain dengan cepat. Port mana yang memberikan kecepatan transfer tertinggi?", a: ["USB 2.0", "USB 3.2 Gen 2", "VGA Port", "Serial Port"], c: 1, p: "USB 3.2 Gen 2 memiliki bandwidth hingga 10 Gbps, jauh lebih tinggi dibanding USB 2.0 yang hanya 480 Mbps." },
+            { id: 3, type: 'pg', category: 'Hardware', q: "Sebuah sistem komputer tidak mau menyala (no power) meskipun kabel sudah terpasang. Setelah dicek, tidak ada bunyi kipas sama sekali. Kerusakan kemungkinan besar terjadi pada...", a: ["Processor", "Monitor", "Power Supply Unit (PSU)", "Mouse"], c: 2, p: "PSU adalah gerbang utama arus listrik masuk ke komponen komputer. Jika mati total tanpa ada pergerakan mekanik (kipas), PSU adalah tersangka utama." },
+            { id: 4, type: 'pg', category: 'Software', q: "Anda memiliki smartphone yang tidak bisa menginstal aplikasi baru karena 'Sistem Operasi tidak didukung'. Apa penyebab paling logis dari masalah ini?", a: ["Layar smartphone retak", "Hardware smartphone terlalu lama untuk menjalankan OS versi terbaru", "Sinyal internet lemah", "Baterai tidak penuh"], c: 1, p: "Aplikasi baru seringkali membutuhkan API dari OS terbaru, sementara OS terbaru membutuhkan spesifikasi hardware (CPU/RAM) tertentu yang mungkin tidak dimiliki perangkat lama." },
+            { id: 5, type: 'pg', category: 'Hardware', q: "Mengapa SSD dianggap lebih unggul daripada HDD dalam hal keamanan data terhadap guncangan fisik?", a: ["SSD terbuat dari besi", "SSD tidak memiliki piringan mekanik yang berputar", "SSD lebih berat", "SSD tahan air"], c: 1, p: "HDD bekerja dengan piringan magnetik yang berputar cepat dan 'head' yang sangat dekat dengan piringan. Guncangan bisa menyebabkan 'head crash'. SSD menggunakan chip memori tanpa bagian bergerak." },
+            { id: 6, type: 'pg', category: 'Software', q: "Perangkat lunak open source seperti Linux berbeda dengan Windows dalam hal lisensi karena...", a: ["Linux hanya bisa diinstal di server", "Kode sumber Linux dapat dimodifikasi dan didistribusikan secara bebas", "Windows tidak butuh sistem operasi", "Linux tidak butuh hardware"], c: 1, p: "Prinsip utama open source adalah kebebasan akses terhadap kode sumber (source code) untuk dipelajari, diubah, dan dibagikan kembali." },
+            { id: 7, type: 'pg', category: 'Hardware', q: "Sebuah printer inkjet mengeluarkan kertas yang tintanya masih basah dan meluber. Masalah ini berkaitan dengan...", a: ["Driver belum update", "Kualitas kertas atau settingan jenis media pada software", "Kabel power longgar", "Scanner kotor"], c: 1, p: "Setiap jenis kertas (glossy, hvs, mate) memiliki daya serap berbeda. Setting printer harus sesuai agar volume semprotan tinta pas." },
+            { id: 8, type: 'pg', category: 'Software', q: "Ketika Anda melakukan 'Multitasking' di smartphone (membuka WhatsApp sambil menonton YouTube), komponen sistem operasi yang bertanggung jawab mengelola perpindahan tugas tersebut adalah...", a: ["File Manager", "Kernel (Scheduler)", "UI Design", "Security Update"], c: 1, p: "Kernel melalui penjadwal (scheduler) mengatur pembagian waktu penggunaan CPU untuk setiap aplikasi agar terlihat berjalan bersamaan." },
+
+            // EXCEL
+            { id: 9, type: 'pg', category: 'Excel', q: "Perhatikan tabel stok barang berikut:<br><table class='table-data my-2 w-full'><tr><th></th><th>A (Nama)</th><th>B (Stok)</th><th>C (Harga)</th></tr><tr><td>1</td><td>Buku</td><td>10</td><td>5000</td></tr><tr><td>2</td><td>Pena</td><td>0</td><td>3000</td></tr><tr><td>3</td><td>Pensil</td><td>5</td><td>2000</td></tr></table>Jika rumus `=COUNTIF(B1:B3; \">0\")` dimasukkan, hasilnya adalah...", a: ["0", "1", "2", "3"], c: 2, p: "COUNTIF menghitung jumlah sel yang memenuhi kriteria. Di kolom B, nilai yang > 0 adalah 10 (B1) dan 5 (B3). Maka hasilnya 2." },
+            { id: 10, type: 'pg', category: 'Excel', q: "Berdasarkan tabel di nomor 9, rumus untuk menghitung total nilai aset barang 'Buku' (Stok x Harga) adalah...", a: ["=B1+C1", "=B1*C1", "=SUM(B1:C1)", "=AVERAGE(B1:C1)"], c: 1, p: "Operasi aritmatika standar untuk perkalian di Excel menggunakan simbol bintang (*)." },
+            { id: 11, type: 'pg', category: 'Excel', q: "Jika cell D1 berisi rumus `=IF(B2=0; \"Habis\"; \"Tersedia\")` menggunakan data tabel nomor 9, maka tampilan di D1 adalah...", a: ["Tersedia", "Habis", "0", "Error"], c: 1, p: "Karena nilai B2 adalah 0, maka kondisi 'B2=0' bernilai TRUE. Argumen kedua (Habis) akan ditampilkan." },
+            { id: 12, type: 'pg', category: 'Excel', q: "Seorang guru ingin memberikan bonus 5 poin kepada siswa yang nilainya di bawah 70. Jika nilai ada di cell A1, rumus yang benar adalah...", a: ["=IF(A1<70; A1+5; A1)", "=IF(A1>70; A1+5; A1)", "=SUM(A1; 5)", "=IF(A1<70; 5; 0)"], c: 0, p: "Struktur IF(kondisi; jika_benar; jika_salah). Jika A1 < 70, maka tambahkan 5, jika tidak (sudah lulus) tetap A1." },
+            { id: 13, type: 'pg', category: 'Excel', q: "Hasil dari rumus `=AVERAGE(10; 20; 30; COUNT(A1:A5))` jika A1 sampai A5 semuanya berisi angka adalah...", a: ["15", "16.25", "20", "65"], c: 1, p: "COUNT(A1:A5) menghasilkan 5. Maka rumusnya menjadi AVERAGE(10; 20; 30; 5) = (10+20+30+5)/4 = 16.25." },
+            { id: 14, type: 'pg', category: 'Excel', q: "Perhatikan tabel:<br><div class='bg-gray-100 p-2 font-mono text-xs'>A1: 80, A2: 90, A3: 70</div>Apa hasil dari `=MAX(A1:A3) - MIN(A1:A3)`?", a: ["10", "20", "70", "90"], c: 1, p: "MAX (90) - MIN (70) = 20." },
+            { id: 15, type: 'pg', category: 'Excel', q: "Fungsi yang paling tepat digunakan untuk menghitung rata-rata nilai hanya untuk siswa perempuan adalah...", a: ["AVERAGE", "AVERAGEIF", "COUNTIF", "SUMIF"], c: 1, p: "AVERAGEIF digunakan untuk merata-rata range tertentu berdasarkan kriteria spesifik." },
+            { id: 16, type: 'pg', category: 'Excel', q: "Jika kita ingin mengunci referensi sel agar tidak berubah saat di-copy ke bawah (absolute reference), simbol apa yang digunakan?", a: ["&", "#", "$", "@"], c: 2, p: "Simbol dollar ($) digunakan untuk mengunci baris, kolom, atau keduanya agar tidak bergeser saat autofill." },
+
+            // AI & LITERASI DIGITAL
+            { id: 17, type: 'pg', category: 'Etika AI', q: "Andi menggunakan AI untuk membuat gambar poster lomba. Jika Andi tidak menyebutkan bahwa gambar tersebut dibuat oleh AI, masalah etika apa yang muncul?", a: ["Kurangnya transparansi karya", "Melanggar hukum gravitasi", "AI akan rusak", "Poster tidak bisa diprint"], c: 0, p: "Kejujuran akademik dan profesionalitas mengharuskan pengakuan terhadap alat yang digunakan dalam berkarya (transparansi)." },
+            { id: 18, type: 'pg', category: 'Literasi Digital', q: "Seseorang menerima berita heboh di grup WA tentang bantuan uang tunai. Langkah literasi digital pertama yang paling bijak adalah...", a: ["Segera membagikan ke grup lain agar banyak yang terbantu", "Cek alamat URL situs dan cari berita serupa di media kredibel", "Klik link tersebut dan masukkan data diri", "Mengabaikan saja tanpa peduli"], c: 1, p: "Verifikasi sumber (Saring sebelum Sharing) adalah kompetensi utama untuk menghindari phishing dan hoax." },
+            { id: 19, type: 'pg', category: 'Etika AI', q: "Mengapa AI terkadang memberikan jawaban yang salah namun terlihat sangat meyakinkan?", a: ["AI sedang bercanda", "AI dirancang untuk menipu manusia", "AI memprediksi kata berdasarkan pola statistik data, bukan logika murni", "Internet sedang lambat"], c: 2, p: "Fenomena ini disebut 'Halusinasi AI'. AI bekerja dengan statistik bahasa, bukan pemahaman faktual yang mendalam terhadap realitas." },
+            { id: 20, type: 'pg', category: 'Literasi Digital', q: "Penerapan 'Digital Culture' yang benar dalam media sosial adalah...", a: ["Menghina orang yang berbeda pendapat", "Mempromosikan budaya lokal dan nilai-nilai kesantunan di internet", "Mengunduh film bajakan", "Membuat akun palsu untuk memantau orang"], c: 1, p: "Digital Culture adalah kemampuan individu dalam membaca, menguraikan, membiasakan, membangun wawasan kebangsaan, nilai Pancasila dan Bhinneka Tunggal Ika dalam kehidupan sehari-hari dan digital." },
+            { id: 21, type: 'pg', category: 'Etika AI', q: "Apa dampak jangka panjang jika siswa terlalu bergantung pada AI untuk menjawab soal esai tanpa mempelajarinya?", a: ["Siswa menjadi sangat pintar", "Kemampuan berpikir kritis dan analisis siswa akan menurun", "Siswa bisa menghemat waktu selamanya", "Guru tidak perlu mengajar lagi"], c: 1, p: "Tanpa latihan berpikir sendiri, sirkuit saraf otak untuk pemecahan masalah tidak terlatih, mengakibatkan degradasi kemampuan kognitif." },
+            { id: 22, type: 'pg', category: 'Literasi Digital', q: "Kewajiban menjaga data pribadi seperti NIK dan tanggal lahir di internet bertujuan untuk menghindari...", a: ["Spam iklan", "Identity Theft (Pencurian Identitas)", "Layar hp rusak", "Kuota habis"], c: 1, p: "Data pribadi adalah aset berharga yang jika jatuh ke tangan salah bisa digunakan untuk membuka akun pinjol ilegal atau penipuan finansial." },
+            { id: 23, type: 'pg', category: 'Literasi Digital', q: "Dalam dunia digital, 'digital footprint' atau jejak digital bersifat...", a: ["Mudah dihapus selamanya", "Permanen dan sulit dihilangkan sepenuhnya", "Hanya bisa dilihat oleh diri sendiri", "Hanya bertahan 24 jam"], c: 1, p: "Apa pun yang dikirim ke server pihak ketiga (sosmed/email) akan tercatat dan bisa dicari kembali di masa depan (jejak digital pasif)." },
+            { id: 24, type: 'pg', category: 'Etika AI', q: "Penggunaan AI untuk membuat video palsu seseorang (Deepfake) yang bertujuan memfitnah adalah pelanggaran dari pilar...", a: ["Digital Skill", "Digital Safety & Ethics", "Digital Money", "Digital Hardware"], c: 1, p: "Digital Ethics menyangkut norma, moral, dan tanggung jawab dalam menggunakan teknologi digital agar tidak merugikan orang lain." },
+
+            // COMPUTATIONAL THINKING
+            { id: 25, type: 'pg', category: 'CT', q: "Sebuah lampu memiliki aturan: Jika saklar ditekan saat lampu MATI, maka lampu HIDUP. Jika saklar ditekan saat lampu HIDUP, maka lampu MATI. Jika saat ini lampu MATI dan saklar ditekan sebanyak 101 kali, kondisi akhir lampu adalah...", a: ["MATI", "HIDUP", "RUSAK", "REDUP"], c: 1, p: "Ini soal paritas (ganjil-genap). Tekanan ganjil = HIDUP, Tekanan genap = MATI. 101 adalah bilangan ganjil." },
+            { id: 26, type: 'pg', category: 'CT', q: "Diberikan algoritma: (1) Mulai, (2) Ambil angka X=5, (3) Tambah X dengan 3, (4) Kalikan X dengan 2, (5) Selesai. Berapa nilai akhir X?", a: ["11", "13", "16", "21"], c: 2, p: "5 -> (5+3) = 8 -> (8 * 2) = 16." },
+            { id: 27, type: 'pg', category: 'CT', q: "Dalam membuat sistem parkir otomatis, pengembang mengabaikan warna mobil dan hanya fokus pada ukuran mobil untuk menentukan slot. Tahapan CT apa ini?", a: ["Dekomposisi", "Abstraksi", "Pengenalan Pola", "Algoritma"], c: 1, p: "Abstraksi adalah proses menyaring informasi yang tidak relevan (warna) dan fokus pada informasi penting (dimensi mobil)." },
+            { id: 28, type: 'pg', category: 'CT', q: "Dekomposisi dalam mencuci pakaian secara manual ditunjukkan oleh...", a: ["Memisahkan pakaian putih, berwarna, dan sangat kotor", "Mengabaikan merek sabun cuci", "Melihat kesamaan noda", "Menjemur pakaian di bawah matahari"], c: 0, p: "Dekomposisi adalah memecah masalah besar (mencuci setumpuk baju) menjadi sub-masalah kecil yang spesifik (memilah jenis baju)." },
+            { id: 29, type: 'pg', category: 'CT', q: "Jika pola angka adalah 2, 4, 8, 16, ..., maka angka ke-6 adalah...", a: ["32", "48", "64", "128"], c: 2, p: "Polanya adalah 2 dipangkatkan n (2^n). 2, 4, 8, 16, 32 (ke-5), 64 (ke-6)." },
+            { id: 30, type: 'pg', category: 'CT', q: "Simbol Belah Ketupat dalam flowchart digunakan untuk...", a: ["Proses", "Input/Output", "Keputusan (Decision)", "Mulai/Selesai"], c: 2, p: "Decision digunakan untuk menampung kondisi Ya/Tidak yang mengarahkan alur program ke cabang berbeda." },
+            { id: 31, type: 'pg', category: 'CT', q: "Seorang koki mencatat bahwa setiap kali membuat kue bantat, ternyata ia lupa memanaskan oven. Ia menyimpulkan oven panas adalah syarat sukses. Ini adalah...", a: ["Abstraksi", "Dekomposisi", "Pengenalan Pola", "Coding"], c: 2, p: "Koki tersebut mengenali pola kesamaan kejadian (lupa oven = kegagalan) untuk membuat generalisasi solusi." },
+            { id: 32, type: 'pg', category: 'CT', q: "Mengapa algoritma harus disusun secara 'efisien'?", a: ["Agar terlihat keren", "Agar komputer bekerja lebih cepat dan hemat memori", "Agar kode menjadi lebih panjang", "Algoritma tidak perlu efisien"], c: 1, p: "Efisiensi (Big O notation dalam CS) menentukan seberapa baik program menangani data besar tanpa membuat hardware terbebani." },
+
+            // CYBER SECURITY
+            { id: 33, type: 'pg', category: 'Cyber', q: "Anda menerima SMS: 'Anak Anda kecelakaan, butuh biaya operasi segera ke rekening XXX'. Ini adalah teknik...", a: ["Brute Force", "Social Engineering", "Malware", "DDoS"], c: 1, p: "Social Engineering menyerang celah psikologis manusia (rasa takut/iba) agar korban melakukan tindakan tanpa berpikir rasional." },
+            { id: 34, type: 'pg', category: 'Cyber', q: "Sebuah website tiba-tiba mengubah tampilannya menjadi pesan politik atau gambar lain tanpa izin pemiliknya. Kejahatan ini disebut...", a: ["Defacing", "Phishing", "Spamming", "Data Mining"], c: 0, p: "Deface berasal dari kata 'wajah' (face), artinya merusak atau mengubah tampilan visual situs web." },
+            { id: 35, type: 'pg', category: 'Cyber', q: "Bagaimana cara kerja Trojan Horse yang paling umum?", a: ["Menyerang secara terang-terangan", "Menyamar sebagai software berguna untuk mengelabui pengguna", "Mematikan listrik rumah", "Mencuri keyboard fisik"], c: 1, p: "Trojan menumpang di aplikasi asli (game/cracked software). Saat dijalankan, ia membuka pintu belakang (backdoor) bagi hacker." },
+            { id: 36, type: 'pg', category: 'Cyber', q: "Dono menggunakan WiFi publik di cafe untuk bertransaksi bank. Tiba-tiba saldonya hilang. Serangan ini kemungkinan besar adalah...", a: ["Virus Lokal", "Man-in-the-Middle (MITM) Attack", "Hardware Failure", "Layar monitor diintip"], c: 1, p: "Dalam MITM, penyerang mencegat data di udara (antara hp dan router wifi) jika koneksi tidak terenkripsi." },
+            { id: 37, type: 'pg', category: 'Cyber', q: "Antivirus memberikan notifikasi bahwa sebuah file .exe memiliki 'heuristic match'. Apa artinya?", a: ["File tersebut 100% aman", "File tersebut memiliki perilaku mencurigakan yang mirip dengan pola virus umum", "Komputer akan segera meledak", "Antivirus minta dibayar"], c: 1, p: "Metode Heuristic mendeteksi ancaman baru yang belum terdaftar di database (signature) berdasarkan perilaku aneh program." },
+            { id: 38, type: 'pg', category: 'Cyber', q: "Penggunaan Two-Factor Authentication (2FA) sangat disarankan karena...", a: ["Membuat login lebih lambat", "Hanya satu password saja mudah dibobol atau dicuri", "Mencegah komputer panas", "Gratis biaya langganan"], c: 1, p: "2FA memastikan meskipun penyerang tahu password Anda, mereka tetap tidak bisa masuk tanpa akses fisik ke perangkat kedua Anda." },
+
+            // JARINGAN
+            { id: 39, type: 'pg', category: 'Jaringan', q: "Sebuah perusahaan memiliki kantor di Jakarta dan Surabaya yang terhubung secara real-time. Jenis jaringan yang digunakan adalah...", a: ["LAN", "PAN", "WAN", "Bluetooth"], c: 2, p: "WAN (Wide Area Network) melintasi area geografis yang sangat luas seperti antar kota, negara, atau benua." },
+            { id: 40, type: 'pg', category: 'Jaringan', q: "Apa fungsi utama dari protokol HTTP/HTTPS saat Anda browsing?", a: ["Mendinginkan server", "Mengatur format pengiriman data antara browser dan web server", "Menyimpan file di harddisk", "Mempercepat download lagu"], c: 1, p: "Protokol adalah aturan komunikasi. HTTP mengatur bagaimana permintaan file web dikirim dan diterima secara terstruktur." },
+            { id: 41, type: 'pg', category: 'Jaringan', q: "Di sebuah sekolah, laptop siswa bisa terhubung ke server meskipun berpindah ruangan. Perangkat pemancar sinyalnya disebut...", a: ["Hub", "Switch", "Access Point (WiFi)", "Modem"], c: 2, p: "Wireless Access Point (WAP) berfungsi mengubah sinyal data kabel (ethernet) menjadi gelombang radio WiFi." },
+            { id: 42, type: 'pg', category: 'Jaringan', q: "Perbedaan utama antara Switch dan Hub dalam jaringan lokal (LAN) adalah...", a: ["Hub lebih pintar mengirim data ke tujuan tertentu", "Switch mengirim data hanya ke perangkat tujuan (mengurangi tabrakan data)", "Switch tidak butuh kabel", "Hub lebih mahal"], c: 1, p: "Switch menyimpan tabel alamat (MAC address) sehingga bisa mengirim data ke node yang tepat, sedangkan Hub mengirim ke semua (broadcast)." },
+            { id: 43, type: 'pg', category: 'Jaringan', q: "Koneksi internet 'Tethering' dari HP ke Laptop adalah contoh skala jaringan...", a: ["MAN", "WAN", "PAN", "Internet Global"], c: 2, p: "PAN (Personal Area Network) menghubungkan perangkat pribadi dalam jarak sangat dekat (sekitar tubuh)." },
+            { id: 44, type: 'pg', category: 'Jaringan', q: "Istilah 'Bandwidth' dalam jaringan internet sering diibaratkan sebagai...", a: ["Kecepatan mobil", "Lebar jalan raya", "Warna aspal", "Jumlah rambu lalu lintas"], c: 1, p: "Bandwidth adalah kapasitas maksimal pengiriman data dalam satu waktu. Semakin lebar jalannya, semakin banyak data bisa lewat bersamaan." },
+            { id: 45, type: 'pg', category: 'Jaringan', q: "IP Address berfungsi sebagai...", a: ["Nama pemilik komputer", "Alamat unik pengenal perangkat dalam jaringan", "Merek perangkat", "Harga koneksi internet"], c: 1, p: "Sama seperti alamat rumah, IP address memastikan paket data sampai ke tujuan yang benar di dunia internet." },
+
+            // ESSAY (DENGAN PEMBAHASAN LENGKAP)
             { 
-                question: "Sebuah komputer server sering mengalami 'Blue Screen' saat beban akses data tinggi. Setelah dicek, suhu komponen mencapai 90°C. Manakah langkah troubleshooting fisik yang paling tepat?", 
-                options: ["Menambah kapasitas RAM menjadi 64GB", "Mengganti Thermal Paste dan membersihkan Heatsink CPU", "Melakukan install ulang Sistem Operasi", "Menghapus file sampah (cache) di Harddisk"], 
-                correct: 1, 
-                explanation: "Suhu tinggi menunjukkan kegagalan sistem pendinginan (Heatsink/Thermal Paste), bukan masalah kapasitas memori atau software." 
+                id: 46, type: 'essay', category: 'Hardware', 
+                q: "Seorang fotografer profesional membutuhkan komputer baru untuk mengedit file foto RAW yang sangat besar. Analisislah, manakah yang lebih prioritas baginya: Kapasitas Penyimpanan Besar (HDD/SSD) atau Kartu Grafis (GPU)? Berikan alasannya!", 
+                p: "<b>Pembahasan Analisis:</b> Untuk fotografer, prioritas pertama adalah <b>SSD (Penyimpanan Cepat)</b> dan <b>RAM</b>. <br>1. SSD diperlukan karena file RAW berukuran besar; SSD mempercepat proses 'read/write' saat memuat foto ke aplikasi editing. <br>2. GPU memang membantu percepatan render, namun banyak aplikasi foto (seperti Lightroom) lebih rakus terhadap CPU dan RAM daripada GPU kelas atas. <br><b>Kesimpulan:</b> Prioritas ada pada kecepatan penyimpanan (SSD) agar alur kerja (workflow) tidak tersendat." 
             },
             { 
-                question: "Andi sedang merakit PC untuk kebutuhan Machine Learning yang membutuhkan pemrosesan data paralel skala besar. Perangkat mana yang menjadi 'otak' utama untuk pemrosesan grafik dan perhitungan data tersebut?", 
-                options: ["Sound Card High-End", "SSD NVMe Gen 4", "GPU (Graphics Processing Unit)", "Power Supply 1000 Watt"], 
-                correct: 2, 
-                explanation: "Dalam AI/Machine Learning, GPU digunakan untuk perhitungan paralel yang jauh lebih cepat dibanding CPU biasa." 
+                id: 47, type: 'essay', category: 'Excel', 
+                q: "Diberikan data nilai di sel A1=60, A2=85, A3=40. Jika Anda ingin mencari rata-rata nilai siswa yang LULUS (nilai >= 70), jelaskan mengapa rumus =AVERAGE(A1:A3) tidak tepat digunakan!", 
+                p: "<b>Pembahasan Analisis:</b> Rumus <code>=AVERAGE(A1:A3)</code> akan menjumlahkan seluruh angka (60+85+40=185) lalu membaginya dengan 3, sehingga menghasilkan 61.6. <br>Masalahnya: Nilai 60 dan 40 tidak memenuhi kriteria LULUS (>=70). <br><b>Solusi:</b> Harus menggunakan fungsi kondisional <code>=AVERAGEIF(A1:A3; \">=70\")</code> yang hanya akan mengambil nilai 85, sehingga rata-rata yang benar adalah 85." 
             },
             { 
-                question: "Manakah dari urutan berikut yang paling menggambarkan siklus kerja komputer (Information Processing Cycle)?", 
-                options: ["Input -> Output -> Storage -> Process", "Input -> Process -> Output -> Storage", "Process -> Input -> Storage -> Output", "Storage -> Process -> Input -> Output"], 
-                correct: 1, 
-                explanation: "Data dimasukkan (Input), diolah (Process), ditampilkan (Output), dan disimpan (Storage)." 
-            },
-            // --- BAGIAN 2: EXCEL & ANALISIS DATA (11-30) ---
-            { 
-                question: "Perhatikan tabel inventaris kantin berikut:\n<table class=\"excel-table\"><thead><tr><th class=\"excel-row-header\"></th><th>A (Barang)</th><th>B (Stok)</th><th>C (Harga)</th></tr></thead><tbody><tr><td class=\"excel-row-header\">1</td><td>Roti</td><td>20</td><td>5000</td></tr><tr><td class=\"excel-row-header\">2</td><td>Susu</td><td>0</td><td>7000</td></tr><tr><td class=\"excel-row-header\">3</td><td>Cokelat</td><td>15</td><td>8000</td></tr></tbody></table>\nRumus apa yang digunakan untuk menghitung total nilai aset hanya untuk barang yang stoknya masih tersedia (di atas 0)?", 
-                options: ["=SUM(B1*C1:B3*C3)", "=SUMIF(B1:B3; \">0\"; C1:C3)", "=SUMPRODUCT(B1:B3; C1:C3)", "=SUMIF(B1:B3; \">0\")"], 
-                correct: 1, 
-                explanation: "SUMIF dengan kriteria '>0' pada range stok akan menjumlahkan harga dari barang yang tersedia." 
+                id: 48, type: 'essay', category: 'CT', 
+                q: "Gunakan tahapan Berpikir Komputasional (Dekomposisi & Algoritma) untuk merancang cara membersihkan seluruh ruangan kelas yang sangat berantakan!", 
+                p: "<b>Pembahasan Analisis:</b> <br>1. <b>Dekomposisi:</b> Memecah tugas besar menjadi bagian kecil: (a) Area meja siswa, (b) Area papan tulis, (c) Area lantai, (d) Area lemari. <br>2. <b>Algoritma:</b> Langkah sistematisnya: <br> - Kumpulkan sampah besar di lantai. <br> - Rapikan posisi meja dan kursi sesuai garis lantai. <br> - Bersihkan debu meja dari atas ke bawah. <br> - Terakhir, sapu dan pel lantai mulai dari sudut terdalam menuju pintu keluar." 
             },
             { 
-                question: "Tabel Nilai Siswa:\n<table class=\"excel-table\"><thead><tr><th class=\"excel-row-header\"></th><th>A (Nama)</th><th>B (Tugas)</th><th>C (Ujian)</th></tr></thead><tbody><tr><td class=\"excel-row-header\">1</td><td>Budi</td><td>80</td><td>70</td></tr><tr><td class=\"excel-row-header\">2</td><td>Siti</td><td>90</td><td>85</td></tr></tbody></table>\nJika kriteria kelulusan adalah 'Rata-rata Tugas dan Ujian minimal 75', rumus IF di sel D1 untuk Budi adalah...", 
-                options: ["=IF(AVERAGE(B1:C1)>=75; \"Lulus\"; \"Gagal\")", "=IF(SUM(B1:C1)>75; \"Lulus\"; \"Gagal\")", "=IF(B1>75; \"Lulus\"; \"Gagal\")", "=IF(AND(B1>75; C1>75); \"Lulus\"; \"Gagal\")"], 
-                correct: 0, 
-                explanation: "Fungsi AVERAGE menghitung rata-rata, lalu IF mengecek apakah hasilnya >= 75." 
+                id: 49, type: 'essay', category: 'Cyber', 
+                q: "Andi menyadari password akun media sosialnya bocor karena ia login di komputer warnet. Analisislah 4 langkah darurat yang harus dilakukan Andi secara berurutan agar akunnya aman kembali!", 
+                p: "<b>Pembahasan Analisis (Langkah Berurutan):</b> <br>1. <b>Ganti Password:</b> Segera ubah kata sandi dengan kombinasi unik di perangkat pribadi yang aman. <br>2. <b>Logout Everywhere:</b> Gunakan fitur 'Sign out from all other sessions' untuk menendang akses hacker yang mungkin masih menempel. <br>3. <b>Aktifkan 2FA:</b> Nyalakan autentikasi dua faktor (OTP/Authenticator App) agar login berikutnya butuh kode dari HP Andi. <br>4. <b>Audit Keamanan:</b> Periksa apakah ada email pemulihan atau nomor HP lain yang ditambahkan hacker di pengaturan akun." 
             },
             { 
-                question: "Analisis Data Logistik:\n<div class=\"illustration-box\">Sel A1 berisi teks 'LAPORAN-2024-JAN'.</div>\nJika Anda ingin mengambil tahun '2024' dari sel tersebut, fungsi teks mana yang dikombinasikan secara tepat?", 
-                options: ["=LEFT(A1; 7)", "=RIGHT(A1; 8)", "=MID(A1; 9; 4)", "=MID(A1; 2024)"], 
-                correct: 2, 
-                explanation: "MID mengambil karakter di tengah. Karakter '2' mulai di urutan ke-9 dan panjang tahun adalah 4 karakter." 
-            },
-            { 
-                question: "Tabel Gaji Karyawan:\n<table class=\"excel-table\"><thead><tr><th class=\"excel-row-header\"></th><th>A (Nama)</th><th>B (Gaji)</th></tr></thead><tbody><tr><td class=\"excel-row-header\">1</td><td>Staf 1</td><td>3.500.000</td></tr><tr><td class=\"excel-row-header\">2</td><td>Staf 2</td><td>Rp 4.000.000</td></tr><tr><td class=\"excel-row-header\">3</td><td>Staf 3</td><td>-</td></tr></tbody></table>\nJika fungsi =COUNT(B1:B3) dijalankan, berapakah hasilnya?", 
-                options: ["3", "2", "1", "Error"], 
-                correct: 1, 
-                explanation: "COUNT hanya menghitung sel berisi angka. Teks 'Rp' atau '-' biasanya membuat sel terbaca sebagai teks/kosong tergantung formatnya." 
-            },
-            { 
-                question: "Dalam Excel, simbol '$' pada rumus =$A$1+B1 berfungsi untuk...", 
-                options: ["Mengubah angka menjadi format mata uang Dollar", "Mengunci alamat sel (absolut) agar tidak berubah saat disalin", "Menandakan bahwa sel tersebut berisi data penting", "Menghapus sel jika nilainya kosong"], 
-                correct: 1, 
-                explanation: "Simbol $ digunakan untuk referensi absolut agar posisi sel tetap saat rumus di-drag/copy." 
-            },
-            { 
-                question: "Diberikan data angka di sel A1:A5 yaitu {10, 20, 30, 40, 50}. Apa hasil dari =MAX(A1:A5) / MIN(A1:A5)?", 
-                options: ["10", "5", "50", "2"], 
-                correct: 1, 
-                explanation: "MAX adalah 50, MIN adalah 10. 50 / 10 = 5." 
-            },
-            { 
-                question: "Apa kegunaan fitur 'Conditional Formatting' pada aplikasi pengolah angka?", 
-                options: ["Menghitung rumus secara otomatis", "Mengubah format sel (warna/font) secara otomatis berdasarkan kondisi tertentu", "Membuat grafik batang dari tabel", "Melindungi file dengan kata sandi"], 
-                correct: 1, 
-                explanation: "Conditional formatting memberikan visualisasi otomatis berdasarkan nilai (misal: nilai merah jika di bawah 75)." 
-            },
-            // Tambahkan soal lainnya hingga 45 (disingkat untuk durabilitas respon)
-            { 
-                question: "Algoritma sorting manakah yang bekerja dengan cara membandingkan elemen yang berdekatan dan menukarnya jika urutannya salah secara berulang?", 
-                options: ["Quick Sort", "Bubble Sort", "Insertion Sort", "Merge Sort"], 
-                correct: 1, 
-                explanation: "Bubble Sort bekerja seperti gelembung, membandingkan tetangga satu per satu." 
-            },
-            { 
-                question: "Saat berselancar di internet, Anda melihat URL diawali dengan 'https://'. Huruf 'S' pada protokol tersebut singkatan dari...", 
-                options: ["System", "Simple", "Secure", "Socket"], 
-                correct: 2, 
-                explanation: "HTTPS (Hypertext Transfer Protocol Secure) menandakan koneksi terenkripsi (aman)." 
-            },
-            { 
-                question: "Dampak negatif dari penggunaan algoritma rekomendasi berlebihan di media sosial adalah munculnya 'Filter Bubble'. Apa artinya?", 
-                options: ["Aplikasi menjadi sangat lambat", "Pengguna hanya melihat informasi yang sesuai opininya saja sehingga pikiran tidak terbuka", "Akun menjadi lebih mudah diretas", "Munculnya banyak iklan produk kesehatan"], 
-                correct: 1, 
-                explanation: "Filter Bubble mengisolasi pengguna dalam informasi yang mereka sukai saja, menghambat pemikiran kritis." 
+                id: 50, type: 'essay', category: 'Etika AI', 
+                q: "AI dapat membuat konten berita palsu yang sangat mirip aslinya. Menurut pendapatmu, siapa yang paling bertanggung jawab dalam penyebaran hoax tersebut: Pencipta teknologi AI atau Pengguna yang menyebarkan konten tersebut? Jelaskan analisismu!", 
+                p: "<b>Pembahasan Analisis:</b> Tanggung jawab bersifat <b>Dualistik (Dua Sisi)</b>. <br>1. <b>Pengguna (Utama):</b> Memiliki tanggung jawab moral dan hukum karena mereka yang memiliki 'niat' (mens rea) untuk menyebarkan kebohongan. Pengguna harus memiliki literasi digital untuk membedakan fakta dan opini. <br>2. <b>Pencipta (Sistem):</b> Bertanggung jawab secara teknis untuk menyematkan 'Watermark AI' atau sistem pendeteksi manipulasi agar teknologi mereka tidak mudah dieksploitasi untuk kejahatan. <br><b>Kesimpulan:</b> Etika digital menekankan pada perilaku pengguna, namun keamanan digital menekankan pada desain sistem oleh pencipta." 
             }
         ];
 
-        // Melengkapi hingga 45 soal PG secara otomatis (duplikasi logic untuk simulasi)
-        while(pgQuestions.length < 45) {
-            const base = pgQuestions[pgQuestions.length % 10];
-            pgQuestions.push({
-                ...base,
-                question: "[Analisis Lanjut] " + base.question,
-                id: pgQuestions.length
+        let userAnswers = {};
+        let studentInfo = { name: '', class: '' };
+
+        function startExam() {
+            const name = document.getElementById('student-name').value.trim();
+            const sClass = document.getElementById('student-class').value;
+
+            if (!name || !sClass) {
+                alert("Harap isi nama lengkap dan pilih kelas Anda!");
+                return;
+            }
+
+            studentInfo = { name, class: sClass };
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('exam-section').classList.remove('hidden');
+            
+            document.getElementById('display-name').innerText = name;
+            document.getElementById('display-class').innerText = "Kelas: " + sClass;
+
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = "bg-white p-6 rounded-xl shadow-sm border border-gray-200 transition-all";
+                qDiv.id = `q-block-${q.id}`;
+
+                let html = `<div class="flex justify-between items-start mb-4">
+                                <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-0.5 rounded uppercase tracking-wide">${q.category}</span>
+                                <span class="text-gray-400 text-sm">No. ${index + 1}</span>
+                            </div>
+                            <div class="text-lg text-gray-800 mb-6 leading-relaxed">${q.q}</div>`;
+
+                if (q.type === 'pg') {
+                    html += `<div class="grid gap-3">`;
+                    q.a.forEach((opt, i) => {
+                        html += `
+                            <label class="flex items-center p-4 border-2 border-gray-100 rounded-xl cursor-pointer hover:border-indigo-200 hover:bg-indigo-50 transition-all group" id="label-${q.id}-${i}">
+                                <input type="radio" name="q-${q.id}" class="hidden" onclick="checkAnswer(${q.id}, ${i}, ${q.c})">
+                                <span class="w-10 h-10 flex items-center justify-center border-2 rounded-full mr-4 text-sm font-bold bg-white group-hover:border-indigo-400 text-gray-500">${String.fromCharCode(65 + i)}</span>
+                                <span class="text-gray-700 font-medium">${opt}</span>
+                            </label>
+                        `;
+                    });
+                    html += `</div>`;
+                } else {
+                    html += `
+                        <textarea id="essay-${q.id}" class="w-full p-4 border-2 rounded-xl h-40 outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-50 transition" placeholder="Tuliskan analisis jawaban Anda di sini..."></textarea>
+                    `;
+                }
+
+                // Placeholder for Feedback (Both PG & Essay)
+                html += `<div id="feedback-${q.id}" class="hidden mt-4 p-5 rounded-xl text-sm border shadow-inner"></div>`;
+
+                qDiv.innerHTML = html;
+                container.appendChild(qDiv);
             });
         }
 
-        const essayQuestions = [
-            { question: "Analisislah kaitan antara penggunaan Artificial Intelligence (AI) dengan privasi data pribadi pengguna internet saat ini!", placeholder: "Tulis analisis dampak AI terhadap privasi..." },
-            { question: "Jelaskan langkah-langkah logika (algoritma) yang harus dilakukan komputer untuk menentukan apakah sebuah angka adalah bilangan genap atau ganjil!", placeholder: "Gunakan istilah Modulo atau pembagian..." },
-            { question: "Mengapa literasi digital dianggap sebagai perlindungan utama dari serangan Phishing dibandingkan sekadar menggunakan antivirus?", placeholder: "Jelaskan sisi psikologis manusia dalam serangan cyber..." },
-            { question: "Perhatikan tabel Excel dengan ribuan baris. Jelaskan mengapa penggunaan VLOOKUP atau INDEX-MATCH lebih disarankan daripada mencari data manual!", placeholder: "Analisis efisiensi waktu dan minimisasi error..." },
-            { question: "Berikan kritikmu terhadap fenomena 'Deepfake'. Apa risiko terbesarnya bagi keamanan nasional sebuah negara?", placeholder: "Analisis risiko manipulasi informasi/identitas..." }
-        ];
+        function checkAnswer(qId, selectedIdx, correctIdx) {
+            if (userAnswers[qId] !== undefined) return;
 
-        const allQuestions = [...pgQuestions, ...essayQuestions];
-        let currentIdx = 0;
-        let score = 0;
-        let userAnswers = new Array(allQuestions.length).fill(null);
-        let checkedQuestions = new Array(allQuestions.length).fill(false);
-
-        function startQuiz() {
-            const name = document.getElementById('user-name').value;
-            const cls = document.getElementById('user-class').value;
-            if(!name || !cls) return alert("Lengkapi Nama dan Kelas!");
-            document.getElementById('start-screen').classList.add('hidden');
-            document.getElementById('quiz-screen').classList.remove('hidden');
-            renderQuestion();
-        }
-
-        function renderQuestion() {
-            const container = document.getElementById('question-container');
-            const q = allQuestions[currentIdx];
-            const isChecked = checkedQuestions[currentIdx];
-            const checkBtn = document.getElementById('check-btn');
-            const nextBtn = document.getElementById('next-btn');
+            userAnswers[qId] = selectedIdx;
+            const feedbackDiv = document.getElementById(`feedback-${qId}`);
+            const q = questions.find(item => item.id === qId);
             
-            checkBtn.classList.add('hidden');
-            nextBtn.disabled = true;
-            nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
-
-            let html = `
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="bg-indigo-600 text-white text-[10px] font-black px-3 py-1 rounded-md uppercase tracking-widest">
-                        ${currentIdx < 45 ? 'PG: ANALISIS' : 'ESSAY: KRITIS'}
-                    </span>
-                    ${isChecked ? '<span class="text-xs font-bold text-emerald-500 flex items-center">✓ Pembahasan Terbuka</span>' : ''}
-                </div>
-                <div class="text-xl text-slate-800 font-bold mb-8 leading-snug">${q.question.replace(/\n/g, '<br>')}</div>
-            `;
-
-            if (currentIdx < 45) { // Multiple Choice
-                html += '<div class="space-y-4">';
-                q.options.forEach((opt, idx) => {
-                    let sClass = "border-slate-200 hover:border-indigo-400 bg-white";
-                    if (isChecked) {
-                        if (idx === q.correct) sClass = "correct-answer border-emerald-500 ring-2 ring-emerald-200";
-                        else if (userAnswers[currentIdx] === idx) sClass = "wrong-answer border-rose-500 ring-2 ring-rose-200";
-                        else sClass = "opacity-40 border-slate-100";
-                    } else if (userAnswers[currentIdx] === idx) {
-                        sClass = "selected-option";
-                    }
-
-                    html += `
-                        <label class="option-label group flex items-center p-5 border-2 rounded-2xl cursor-pointer transition-all ${sClass} ${isChecked ? 'pointer-events-none' : ''}">
-                            <input type="radio" name="ans" class="hidden" onchange="selectOption(${idx})" ${userAnswers[currentIdx] === idx ? 'checked' : ''}>
-                            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl bg-slate-100 text-slate-500 font-black mr-4 group-hover:bg-indigo-500 group-hover:text-white transition-all">
-                                ${String.fromCharCode(65 + idx)}
-                            </div>
-                            <div class="font-bold text-slate-700">${opt}</div>
-                        </label>
-                    `;
-                });
-                html += '</div>';
-
-                if (isChecked) {
-                    html += `
-                        <div class="mt-8 p-6 bg-indigo-50 border-l-8 border-indigo-600 rounded-2xl animate-in fade-in duration-500">
-                            <h5 class="text-indigo-900 font-black text-xs uppercase mb-2">Logika Jawaban:</h5>
-                            <p class="text-indigo-800 text-sm leading-relaxed italic">"${q.explanation}"</p>
-                        </div>
-                    `;
-                    nextBtn.disabled = false;
-                    nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                } else if (userAnswers[currentIdx] !== null) {
-                    checkBtn.classList.remove('hidden');
-                }
-            } else { // Essay
-                html += `
-                    <textarea class="w-full h-64 p-6 border-2 border-slate-200 rounded-2xl focus:border-indigo-500 outline-none transition-all shadow-inner bg-slate-50 font-medium text-slate-700" 
-                        oninput="userAnswers[currentIdx]=this.value; toggleEssayNext()" 
-                        placeholder="${q.placeholder}">${userAnswers[currentIdx] || ''}</textarea>
-                `;
-                setTimeout(toggleEssayNext, 0);
-            }
-
-            container.innerHTML = html;
-            updateUI();
-        }
-
-        function selectOption(idx) {
-            userAnswers[currentIdx] = idx;
-            renderQuestion();
-        }
-
-        function checkCurrentAnswer() {
-            if (userAnswers[currentIdx] === allQuestions[currentIdx].correct) score++;
-            checkedQuestions[currentIdx] = true;
-            renderQuestion();
-        }
-
-        function toggleEssayNext() {
-            const nextBtn = document.getElementById('next-btn');
-            const val = userAnswers[currentIdx] || "";
-            if (val.length > 10) {
-                nextBtn.disabled = false;
-                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            feedbackDiv.classList.remove('hidden');
+            
+            if (selectedIdx === correctIdx) {
+                feedbackDiv.className = "mt-4 p-4 rounded-xl bg-green-50 border-green-200 text-green-800 border";
+                feedbackDiv.innerHTML = `<div class="flex items-start"><span class="mr-3 text-xl">✅</span> <div><strong>Analisis Tepat!</strong><br><p class="mt-1 opacity-90">${q.p}</p></div></div>`;
+                document.getElementById(`label-${qId}-${selectedIdx}`).classList.add('correct', 'border-green-500');
             } else {
-                nextBtn.disabled = true;
-                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                feedbackDiv.className = "mt-4 p-4 rounded-xl bg-red-50 border-red-200 text-red-800 border";
+                feedbackDiv.innerHTML = `<div class="flex items-start"><span class="mr-3 text-xl">❌</span> <div><strong>Analisis Belum Tepat.</strong><br>Jawaban benar: <b>${q.a[correctIdx]}</b><br><p class="mt-1 opacity-90">${q.p}</p></div></div>`;
+                document.getElementById(`label-${qId}-${selectedIdx}`).classList.add('incorrect', 'border-red-500');
+                document.getElementById(`label-${qId}-${correctIdx}`).classList.add('correct', 'border-green-500');
             }
+            updateProgress();
         }
 
-        function updateUI() {
-            document.getElementById('prev-btn').disabled = (currentIdx === 0);
-            const nextBtn = document.getElementById('next-btn');
-            nextBtn.innerHTML = currentIdx === allQuestions.length - 1 ? "Selesaikan & Lihat Skor" : "Soal Berikutnya";
-            document.getElementById('question-info').innerText = `Soal ${currentIdx + 1} dari ${allQuestions.length}`;
-            document.getElementById('progress-bar').style.width = ((currentIdx + 1) / allQuestions.length) * 100 + "%";
-            document.getElementById('score-counter').innerText = `Point: ${score}`;
+        function updateProgress() {
+            const answered = Object.keys(userAnswers).length;
+            document.getElementById('progress-text').innerText = `${answered} / 50`;
         }
 
-        function nextQuestion() {
-            if (currentIdx === allQuestions.length - 1) showResults();
-            else { currentIdx++; renderQuestion(); }
+        function finishExam() {
+            // Calculate PG Score
+            let pgScore = 0;
+            const pgQuestions = questions.filter(q => q.type === 'pg');
+            pgQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.c) pgScore++;
+            });
+
+            const finalScoreValue = Math.round((pgScore / pgQuestions.length) * 100);
+
+            // Transition to result
+            document.getElementById('exam-section').classList.add('hidden');
+            document.getElementById('result-section').classList.remove('hidden');
+            document.getElementById('final-score').innerText = finalScoreValue;
+            
+            let message = "";
+            if(finalScoreValue >= 80) message = "Luar biasa! Kemampuan analisis informatika Anda sangat tajam.";
+            else if(finalScoreValue >= 60) message = "Cukup baik. Terus asah logika Anda dalam memahami teknologi.";
+            else message = "Tetap semangat! Informatika bukan hanya menghafal, tapi memahami logika di baliknya.";
+
+            document.getElementById('result-summary').innerHTML = `Halo <strong>${studentInfo.name}</strong>, skor Anda adalah <strong>${finalScoreValue}</strong>.<br><br>${message}<br><br><span class='text-xs text-gray-400 italic'>*Skor hanya dihitung dari 45 soal Pilihan Ganda secara otomatis. Soal Essay memerlukan penilaian mandiri/guru.</span>`;
+            
+            // Generate Essay Feedback in the review view
+            questions.filter(q => q.type === 'essay').forEach(q => {
+                const feedbackDiv = document.getElementById(`feedback-${q.id}`);
+                const userText = document.getElementById(`essay-${q.id}`).value || "(Tidak dijawab)";
+                
+                feedbackDiv.classList.remove('hidden');
+                feedbackDiv.className = "mt-4 p-5 bg-amber-50 border-amber-200 border rounded-xl";
+                feedbackDiv.innerHTML = `
+                    <div class="mb-3">
+                        <p class="font-bold text-gray-500 text-xs uppercase mb-1">Jawaban Anda:</p>
+                        <p class="italic text-gray-700">"${userText}"</p>
+                    </div>
+                    <hr class="my-3 border-amber-200">
+                    <div>
+                        <p class="font-bold text-amber-800 text-xs uppercase mb-1">Pembahasan Analisis (Kunci):</p>
+                        <p class="text-amber-900 leading-relaxed">${q.p}</p>
+                    </div>
+                `;
+                // Lock the textarea
+                document.getElementById(`essay-${q.id}`).readOnly = true;
+                document.getElementById(`essay-${q.id}`).classList.add('bg-gray-200', 'cursor-not-allowed');
+            });
+
+            window.scrollTo(0, 0);
         }
 
-        function prevQuestion() {
-            if (currentIdx > 0) { currentIdx--; renderQuestion(); }
-        }
-
-        function showResults() {
-            document.getElementById('quiz-screen').classList.add('hidden');
-            document.getElementById('result-screen').classList.remove('hidden');
-            const finalScore = Math.round((score / 45) * 100); // Nilai PG saja
-            document.getElementById('final-score').innerText = finalScore;
-            document.getElementById('correct-count').innerText = score;
-            document.getElementById('wrong-count').innerText = 45 - score;
+        function viewReview() {
+            document.getElementById('result-section').classList.add('hidden');
+            document.getElementById('exam-section').classList.remove('hidden');
+            document.getElementById('btn-finish').classList.add('hidden'); // Hide finish button in review mode
+            
+            // Add a "Back to Result" button at the bottom
+            const container = document.getElementById('questions-container');
+            if(!document.getElementById('btn-back-to-res')) {
+                const backBtn = document.createElement('button');
+                backBtn.id = 'btn-back-to-res';
+                backBtn.innerText = "Kembali ke Skor";
+                backBtn.className = "w-full bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg mt-6";
+                backBtn.onclick = () => {
+                    document.getElementById('exam-section').classList.add('hidden');
+                    document.getElementById('result-section').classList.remove('hidden');
+                };
+                container.appendChild(backBtn);
+            }
+            
+            window.scrollTo(0, 0);
         }
     </script>
 </body>
